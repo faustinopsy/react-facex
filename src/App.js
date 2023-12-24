@@ -4,6 +4,9 @@ import WebcamCapture from './WebcamCapture';
 import FaceRecognition from './FaceRegister';
 import RecognitionPage from './RecognitionPage'; 
 import { cadastrarUsuario } from './utils/api';
+import Navbar from './components/Navbar';
+import './App.css';
+
 
 function App() {
   const videoRef = useRef(null);
@@ -30,28 +33,18 @@ function App() {
 
   return (
     <Router>
+      <Navbar /> 
       <Routes>
         <Route path="/" element={
           <div>
+          <div className="camera-container">
             <WebcamCapture videoRef={videoRef} onCapture={handleCapture} />
             <FaceRecognition videoRef={videoRef} isCapture={capture} setCaptureData={setCaptureData} setCapture={setCapture} />
             <p>Capturas: {captureData.length} de {totalCaptures}</p>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleFormChange}
-              placeholder="Nome"
-            />
-            <input
-              type="number"
-              name="number"
-              value={formData.number}
-              onChange={handleFormChange}
-              placeholder="Número"
-            />
+            <input type="text" name="name" value={formData.name} onChange={handleFormChange} placeholder="Nome" />
+            <input type="number" name="number" value={formData.number} onChange={handleFormChange} placeholder="Número" />
             <button onClick={handleSave} disabled={captureData.length !== totalCaptures}>Salvar Dados</button>
-            <Link to="/recognition">Ir para Reconhecimento</Link>
+          </div>
           </div>
         } />
         <Route path="/recognition" element={<RecognitionPage />} />
