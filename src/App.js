@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import WebcamCapture from './WebcamCapture';
-import FaceRecognition from './FaceRecognition';
+import FaceRecognition from './FaceRegister';
 import RecognitionPage from './RecognitionPage'; 
+import { cadastrarUsuario } from './utils/api';
 
 function App() {
   const videoRef = useRef(null);
@@ -21,9 +22,8 @@ function App() {
 
   const handleSave = () => {
     if (captureData.length === 3) {
-      const dataToSave = { ...formData, faces: captureData.map(descriptor => Array.from(descriptor))  };
-      localStorage.setItem(`userData${formData.number}`, JSON.stringify(dataToSave));
-      alert('Dados salvos com sucesso!');
+      const usuario = { nome: formData.name, registro:formData.number, rosto: captureData.map(descriptor => Array.from(descriptor)) };
+      cadastrarUsuario(usuario);
       setCaptureData([]);
     }
   };

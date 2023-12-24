@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import * as faceapi from 'face-api.js';
+import useLoadFaceApiModels from './useLoadFaceApiModels';
 
-function FaceRecognition({ videoRef, isCapture, setCaptureData, setCapture }) {
-    const [modelsLoaded, setModelsLoaded] = useState(false);
-
-    useEffect(() => {
-        const loadModels = async () => {
-            await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-            await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-            await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
-            setModelsLoaded(true);
-        };
-
-        loadModels();
-    }, []);
+function FaceRegister({ videoRef, isCapture, setCaptureData, setCapture }) {
+    const modelsLoaded = useLoadFaceApiModels();
 
     useEffect(() => {
         if (isCapture && modelsLoaded) {
@@ -38,4 +28,4 @@ function FaceRecognition({ videoRef, isCapture, setCaptureData, setCapture }) {
     return <div></div>;
 }
 
-export default FaceRecognition;
+export default FaceRegister;

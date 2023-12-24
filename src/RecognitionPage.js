@@ -1,21 +1,13 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect,useState } from 'react';
 import * as faceapi from 'face-api.js';
+import useLoadFaceApiModels from './useLoadFaceApiModels';
+import { buscarUsuarios,registrarPresenca } from './utils/api';
 
 function RecognitionPage() {
     const videoRef = useRef(null);
-    const [modelsLoaded, setModelsLoaded] = useState(false);
-
-    useEffect(() => {
-        const loadModels = async () => {
-            await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-            await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-            await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
-            setModelsLoaded(true);
-        };
-
-        loadModels();
-    }, []);
-
+    const modelsLoaded = useLoadFaceApiModels();
+    const [usuarios, setUsuarios] = useState([]);
+ 
     useEffect(() => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: {} })
@@ -24,7 +16,15 @@ function RecognitionPage() {
                 })
                 .catch(err => console.error("Falha ao ativar a câmera:", err));
         }
+    
+        const fetchUsuarios = async () => {
+            const fetchedUsuarios = await buscarUsuarios();
+            setUsuarios(fetchedUsuarios);
+        };
+    
+        fetchUsuarios();
     }, []);
+    
 
     const compareFaces = async () => {
         if (!modelsLoaded || !videoRef.current) return;
@@ -39,35 +39,22 @@ function RecognitionPage() {
 
         let matched = false;
 
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key.startsWith('userData')) {
-                const userData = JSON.parse(localStorage.getItem(key));
-                userData.faces.forEach(faceArray => {
-                    const faceDescriptor = new Float32Array(faceArray);
-                    if (faceDescriptor.length === detections.descriptor.length) {
-                        const distance = faceapi.euclideanDistance(faceDescriptor, detections.descriptor);
-                        if (distance < 0.8) { 
-                            matched = true;
-                            const similarity = (1 - distance) * 100;
-                            console.log(`Rosto reconhecido: ${userData.name} com ${Math.round(similarity)} % de aproximidade` );
-                        
-                            const currentDate = new Date().toLocaleDateString();
+        usuarios.forEach(async (userData) => {
+            userData.faces.forEach(async (faceArray) => {
+                const faceDescriptor = new Float32Array(faceArray);
+                if (faceDescriptor.length === detections.descriptor.length) {
+                    const distance = faceapi.euclideanDistance(faceDescriptor, detections.descriptor);
+                    if (distance < 0.8) { 
+                        matched = true;
+                        const similarity = (1 - distance) * 100;
+                        console.log(`Rosto reconhecido: ${userData.nome} com ${Math.round(similarity)} % de aproximidade`);
 
-                            const attendanceKey = `attendance_${userData.number}`;
-                            const existingAttendance = JSON.parse(localStorage.getItem(attendanceKey)) || [];
-
-                            if (!existingAttendance.some(record => record.date === currentDate)) {
-                                const attendanceRecord = { date: currentDate, time: new Date().toLocaleTimeString() };
-                                existingAttendance.push(attendanceRecord);
-                                localStorage.setItem(attendanceKey, JSON.stringify(existingAttendance));
-                            }
-                        }
+                        await registrarPresenca(userData.id, 'E');
+                            
                     }
-                });
-            }
-        }
-    
+                }
+            });
+        });
         if (!matched) {
             console.log("Rosto não reconhecido.");
         }
