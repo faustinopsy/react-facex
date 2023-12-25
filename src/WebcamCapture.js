@@ -25,9 +25,10 @@ function WebcamCapture({ videoRef, onCapture }) {
     };
 
     useEffect(() => {
+        const videoElement = videoRef.current; 
         return () => {
-            if (videoRef.current && videoRef.current.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+            if (videoElement && videoElement.srcObject) {
+                videoElement.srcObject.getTracks().forEach(track => track.stop());
             }
         };
     }, [videoRef]);
