@@ -1,12 +1,16 @@
 
 export const  cadastrarUsuario = async (usuario) => {
     try {
+        const usuarioComAcao = {
+            ...usuario,
+            acao: 'cadastrar'
+        };
         const response = await fetch('http://localhost/app/Usuarios.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(usuario),
+            body: JSON.stringify(usuarioComAcao),
         });
 
         const data = await response.json();
@@ -110,5 +114,68 @@ export const  excluirUsuario = async (id) => {
         console.log('Usuário excluído:', data);
     } catch (error) {
         console.error('Erro ao excluir usuário:', error);
+
+    }
+};
+export const registrarUsuario = async (usuario) => {
+    try {
+        const response = await fetch('http://localhost/app/Usuarios.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...usuario, acao: 'registrar' }),
+        });
+
+        const data = await response.json();
+        if(data.status){
+            console.log('Registrado com sucesso');
+            const sucesso = {
+                ...data,
+                message: 'Cadastrado com sucesso'
+            };
+            return sucesso
+        }else{
+            const sucesso = {
+                ...data,
+                message: 'Já existe registro para o usuário'
+            };
+            return sucesso
+        }
+        
+    } catch (error) {
+        console.error('Erro ao registrar usuário:', error);
+        return error
+    }
+};
+export const fazerLogin = async (credenciais) => {
+    try {
+        const response = await fetch('http://localhost/app/Usuarios.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...credenciais, acao: 'login' }),
+        });
+
+        const data = await response.json();
+        if(data.status){
+            console.log('Logado com sucesso');
+            const sucesso = {
+                ...data,
+                message: 'Logado com sucesso'
+            };
+            return sucesso
+        }else{
+            const sucesso = {
+                ...data,
+                message: 'Não é possivel logar'
+            };
+            return sucesso
+        }
+       
+    } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        return error
     }
 };

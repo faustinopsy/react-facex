@@ -5,6 +5,7 @@ import FaceRecognition from './FaceRegister';
 import RecognitionPage from './RecognitionPage'; 
 import PresencasRegistradas from './PresencasRegistradas'; 
 import UsuariosCadastrados from './UsuariosCadastrados'; 
+import RegistroLogin from './RegistroLogin';
 import { cadastrarUsuario } from './utils/api';
 import Navbar from './components/Navbar';
 import './App.css';
@@ -52,6 +53,7 @@ function App() {
         <Route path="/recognition" element={<RecognitionPage />} />
         <Route path="/usuarios" element={<UsuariosCadastrados />} />
         <Route path="/presencas" element={<PresencasRegistradas />} />
+        <Route path="/login" element={<RegistroLogin />} />
       </Routes>
     </Router>
   );
