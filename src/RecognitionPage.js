@@ -65,7 +65,7 @@ function RecognitionPage() {
             <div className="camera-container">
             <h1>Reconhecimento Facial</h1>
             <video ref={videoRef} autoPlay={true} style={{ width: '640px', height: '460px' }}></video>
-            <button onClick={compareFaces}>Comparar Rosto</button>
+            <button onClick={compareFaces}>Marcar presença</button>
             </div>
         </div>
     );

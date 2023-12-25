@@ -39,6 +39,44 @@ export const registrarPresenca = async (idUsuario, tipo) => {
         console.error('Erro ao registrar presença:', error);
     }
 };
+export const buscarPresencasPorRegistro = async (registro, dataregistro) => {
+    try {
+        let url = 'http://localhost/app/Presenca.php';
+        const params = new URLSearchParams();
+        if (registro) params.append('registro', registro);
+        if (dataregistro) params.append('data', dataregistro);
+        url += '?' + params.toString();
+
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log('Presenças recuperadas:', data.presencas);
+        return data.presencas;
+    } catch (error) {
+        console.error('Erro ao buscar presenças:', error);
+        return [];
+    }
+};
+
+export const atualizarPresenca = async (id, novaDataHora) => {
+    try {
+        const response = await fetch('http://localhost/app/Presenca.php', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id, novaDataHora }),
+        });
+
+        const data = await response.json();
+        if (data.status) {
+            console.log('Presença atualizada:', data);
+        } else {
+            console.log('Erro ao atualizar presença:', data.error);
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar presença:', error);
+    }
+};
 
 export const  buscarUsuarios = async () => {
     try {
@@ -51,7 +89,17 @@ export const  buscarUsuarios = async () => {
         return [];
     }
 };
-
+export const  buscarUsuariosRelatorio = async () => {
+    try {
+        const response = await fetch('http://localhost/app/Usuarios.php?relatorio=1');
+        const data = await response.json();
+        console.log('Usuários recuperados:', data.usuarios);
+        return data.usuarios;
+    } catch (error) {
+        console.error('Erro ao buscar usuários:', error);
+        return [];
+    }
+};
 export const  excluirUsuario = async (id) => {
     try {
         const response = await fetch(`http://localhost/app/Usuarios.php?id=${id}`, {

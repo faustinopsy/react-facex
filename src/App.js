@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WebcamCapture from './WebcamCapture';
 import FaceRecognition from './FaceRegister';
 import RecognitionPage from './RecognitionPage'; 
+import PresencasRegistradas from './PresencasRegistradas'; 
+import UsuariosCadastrados from './UsuariosCadastrados'; 
 import { cadastrarUsuario } from './utils/api';
 import Navbar from './components/Navbar';
 import './App.css';
@@ -48,6 +50,8 @@ function App() {
           </div>
         } />
         <Route path="/recognition" element={<RecognitionPage />} />
+        <Route path="/usuarios" element={<UsuariosCadastrados />} />
+        <Route path="/presencas" element={<PresencasRegistradas />} />
       </Routes>
     </Router>
   );
