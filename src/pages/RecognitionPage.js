@@ -1,6 +1,6 @@
 import React, { useRef, useEffect,useState } from 'react';
 import * as faceapi from 'face-api.js';
-import useLoadFaceApiModels from '../models/useLoadFaceApiModels';
+import useLoadFaceApiModels from '../useLoadFaceApiModels';
 import { buscarUsuarios,registrarPresenca } from '../utils/api';
 
 function RecognitionPage() {

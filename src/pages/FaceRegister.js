@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as faceapi from 'face-api.js';
-import useLoadFaceApiModels from '../models/useLoadFaceApiModels';
+import useLoadFaceApiModels from '../useLoadFaceApiModels';
 import { cadastrarUsuario } from '../utils/api';
 
 function FaceRegister({ videoRef }) {
