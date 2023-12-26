@@ -27,21 +27,20 @@ function FaceRegister({ videoRef }) {
     };
 
     const captureFace = async () => {
-        console.log(modelsLoaded)
         if (!videoRef.current || !modelsLoaded || captureData.length >= totalCaptures) return;
-
+        
         const detections = await faceapi.detectAllFaces(
             videoRef.current, 
             new faceapi.TinyFaceDetectorOptions()
         ).withFaceLandmarks().withFaceDescriptors();
-
+      
         if (detections.length > 0) {
             setCaptureData(prevData => [...prevData, detections[0].descriptor]);
         }
     };
 
     return (
-        <div className="camera-container">
+        <div className="camera-container container">
             <p>Capturas: {captureData.length} de {totalCaptures}</p>
             <button onClick={captureFace} disabled={captureData.length >= totalCaptures}>Capturar Face</button>
             <input type="text" name="name" value={formData.name} onChange={handleFormChange} placeholder="Nome" />

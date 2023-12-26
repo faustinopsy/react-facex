@@ -31,7 +31,7 @@ function UsuariosCadastrados() {
     };
 
     return (
-        <div>
+        <div className="camera-container container">
             <h1>Usuários Cadastrados</h1>
             <ul>
                 {usuarios.map(usuario => (

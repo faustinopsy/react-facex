@@ -50,7 +50,7 @@ function RecognitionPage() {
                         console.log(`Rosto reconhecido: ${userData.nome} com ${Math.round(similarity)} % de aproximidade`);
 
                         await registrarPresenca(userData.id, 'E');
-                            
+                        return;
                     }
                 }
             });

@@ -22,7 +22,7 @@ function PresencasRegistradas() {
     
 
     return (
-        <div>
+        <div className="camera-container container">
             <h1>Presenças Registradas</h1>
             <input
                 type="text"
