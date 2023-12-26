@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react-facex/static/css/main.1b79615e.css",
+    "main.js": "/react-facex/static/js/main.38386c4e.js",
+    "static/js/496.dc91995d.chunk.js": "/react-facex/static/js/496.dc91995d.chunk.js",
+    "index.html": "/react-facex/index.html",
+    "main.1b79615e.css.map": "/react-facex/static/css/main.1b79615e.css.map",
+    "main.38386c4e.js.map": "/react-facex/static/js/main.38386c4e.js.map",
+    "496.dc91995d.chunk.js.map": "/react-facex/static/js/496.dc91995d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1b79615e.css",
+    "static/js/main.38386c4e.js"
+  ]
+}
