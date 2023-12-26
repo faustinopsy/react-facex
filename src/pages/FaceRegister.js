@@ -26,21 +26,19 @@ function FaceRegister({ videoRef }) {
         }
     };
 
-    
-        const captureFace = async () => {
-            if (!videoRef.current || !modelsLoaded) return;
+    const captureFace = async () => {
+        console.log(modelsLoaded)
+        if (!videoRef.current || !modelsLoaded || captureData.length >= totalCaptures) return;
 
-            const detections = await faceapi.detectAllFaces(
-                videoRef.current, 
-                new faceapi.TinyFaceDetectorOptions()
-            ).withFaceLandmarks().withFaceDescriptors();
+        const detections = await faceapi.detectAllFaces(
+            videoRef.current, 
+            new faceapi.TinyFaceDetectorOptions()
+        ).withFaceLandmarks().withFaceDescriptors();
 
-            if (detections.length > 0) {
-                setCaptureData(prevData => [...prevData, detections[0].descriptor]);
-            }
-        };
-
-    
+        if (detections.length > 0) {
+            setCaptureData(prevData => [...prevData, detections[0].descriptor]);
+        }
+    };
 
     return (
         <div className="camera-container">
