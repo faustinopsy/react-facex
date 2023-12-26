@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { buscarUsuariosRelatorio, excluirUsuario } from './utils/api';
+import { buscarUsuariosRelatorio, excluirUsuario } from '../utils/api';
 
 function UsuariosCadastrados() {
     const [usuarios, setUsuarios] = useState([]);

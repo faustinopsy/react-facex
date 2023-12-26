@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { registrarUsuario, fazerLogin } from './utils/api'; 
-import ErrorModal from './ErrorModal'; 
+import { useNavigate } from 'react-router-dom';
+import { registrarUsuario, fazerLogin } from '../utils/api'; 
+import ErrorModal from '../ErrorModal'; 
+import { useAuth } from '../AuthContext';
 
 function RegistroLogin() {
     const [registroData, setRegistroData] = useState({ nome: '', registro: '', email: '', senha: '' });
     const [loginData, setLoginData] = useState({ email: '', senha: '' });
     const [showModal, setShowModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [activeTab, setActiveTab] = useState('register');
-    
+    const [activeTab, setActiveTab] = useState('login');
+    const { login } = useAuth(); 
+    const navigate = useNavigate();
+
     const handleRegistroChange = (e) => {
         setRegistroData({ ...registroData, [e.target.name]: e.target.value });
     };
@@ -31,6 +35,8 @@ function RegistroLogin() {
         const resultado = await fazerLogin(loginData);
         if (resultado.status) {
             handleShowModal(resultado.message);
+            login(resultado.usuario); 
+            navigate('/');
         }
     };
 

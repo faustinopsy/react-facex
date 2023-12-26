@@ -36,11 +36,8 @@ function WebcamCapture({ videoRef, onCapture }) {
     return (
         <div style={{ position: 'relative', width: '500px', height: '400px' }}> 
             <video ref={videoRef} autoPlay={true} style={{ position: 'absolute', width: '100%', height: '100%' }} />
-            <canvas style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }} id="canvas" />
             <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
                 <button onClick={toggleCamera}>{isCameraActive ? 'Desativar Câmera' : 'Ativar Câmera'}</button>
-                <button className="btn-salvar" onClick={onCapture} disabled={!isCameraActive}>Capturar</button>
-
             </div>
         </div>
     );

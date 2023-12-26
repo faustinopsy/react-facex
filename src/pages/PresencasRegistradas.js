@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { buscarPresencasPorRegistro, atualizarPresenca } from './utils/api';
+import { buscarPresencasPorRegistro, atualizarPresenca } from '../utils/api';
 
 function PresencasRegistradas() {
     const [presencas, setPresencas] = useState([]);

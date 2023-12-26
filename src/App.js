@@ -1,61 +1,33 @@
-import React, { useRef, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import WebcamCapture from './WebcamCapture';
-import FaceRecognition from './FaceRegister';
-import RecognitionPage from './RecognitionPage'; 
-import PresencasRegistradas from './PresencasRegistradas'; 
-import UsuariosCadastrados from './UsuariosCadastrados'; 
-import RegistroLogin from './RegistroLogin';
-import { cadastrarUsuario } from './utils/api';
+import React, { useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import RecognitionPage from './pages/RecognitionPage'; 
+import PresencasRegistradas from './pages/PresencasRegistradas'; 
+import UsuariosCadastrados from './pages/UsuariosCadastrados'; 
+import FaceCapturePage from './pages/FaceCapturePage';
+import RegistroLogin from './pages/RegistroLogin';
+import Logout from './pages/Logout';
 import Navbar from './components/Navbar';
+import { AuthProvider } from './AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 import './App.css';
-
 
 function App() {
   const videoRef = useRef(null);
-  const [capture, setCapture] = useState(false);
-  const [captureData, setCaptureData] = useState([]);
-  const [formData, setFormData] = useState({ name: '', number: '' });
-  const totalCaptures = 3;
-
-  const handleCapture = () => {
-    setCapture(prev => !prev);
-  };
-
-  const handleFormChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSave = () => {
-    if (captureData.length === 3) {
-      const usuario = { nome: formData.name, registro:formData.number, rosto: captureData.map(descriptor => Array.from(descriptor)) };
-      cadastrarUsuario(usuario);
-      setCaptureData([]);
-    }
-  };
 
   return (
-    <Router>
-      <Navbar /> 
-      <Routes>
-        <Route path="/" element={
-          <div>
-          <div className="camera-container">
-            <WebcamCapture videoRef={videoRef} onCapture={handleCapture} />
-            <FaceRecognition videoRef={videoRef} isCapture={capture} setCaptureData={setCaptureData} setCapture={setCapture} />
-            <p>Capturas: {captureData.length} de {totalCaptures}</p>
-            <input type="text" name="name" value={formData.name} onChange={handleFormChange} placeholder="Nome" />
-            <input type="number" name="number" value={formData.number} onChange={handleFormChange} placeholder="Número" />
-            <button onClick={handleSave} disabled={captureData.length !== totalCaptures}>Salvar Dados</button>
-          </div>
-          </div>
-        } />
-        <Route path="/recognition" element={<RecognitionPage />} />
-        <Route path="/usuarios" element={<UsuariosCadastrados />} />
-        <Route path="/presencas" element={<PresencasRegistradas />} />
-        <Route path="/login" element={<RegistroLogin />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar /> 
+        <Routes>
+        <Route path="/cadastrar" element={<PrivateRoute element={() => <FaceCapturePage videoRef={videoRef} />} />} />
+          <Route path="/reconhecer" element={<RecognitionPage />} />
+          <Route path="/usuarios" element={<PrivateRoute element={UsuariosCadastrados} />} />
+          <Route path="/presencas" element={<PrivateRoute element={PresencasRegistradas} />} />
+          <Route path="/login" element={<RegistroLogin />} />
+          <Route path="/logout"  element={<Logout />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
